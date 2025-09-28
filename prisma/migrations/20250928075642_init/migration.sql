@@ -4,6 +4,8 @@ CREATE TABLE "public"."User" (
     "email" TEXT NOT NULL,
     "name" TEXT,
     "password" TEXT NOT NULL,
+    "isValidEmail" BOOLEAN NOT NULL DEFAULT false,
+    "otpCode" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

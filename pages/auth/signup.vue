@@ -63,7 +63,7 @@ watch(
           />
         </FormError>
         <!-- Password -->
-        <FormError :errors="v$.email.$errors">
+        <FormError :errors="v$.password.$errors">
           <BaseInput
             v-model="registerInput.password"
             :type="'password'"

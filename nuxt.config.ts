@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     path:'~/components',
     pathPrefix:false
   }],
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt',"@prisma/nuxt"],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt',"@prisma/nuxt", 'nuxt-nodemailer'],
   runtimeConfig:{
     // PRIVATE
     JWT_TOKEN_KEY: process.env.JWT_TOKEN_KEY,
@@ -15,5 +15,15 @@ export default defineNuxtConfig({
     public:{
       // PUBLIC
     }
-  }
+  },
+   nodemailer: {
+    from: '"Test-App-Nuxt" <surajgupta.coder@gmail.com>',
+    host: process.env.MAIL_HOST,
+    port: Number(process.env.MAIL_PORT),
+    secure: false,
+    auth: {
+      user: process.env.MAIL_TRAP_USER,
+      pass: process.env.MAIL_TRAP_PASSWRD,
+    },
+  },
 })

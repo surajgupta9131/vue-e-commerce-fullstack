@@ -1,6 +1,43 @@
+import prisma from "../../../utils/script.prisma";
+import { hashPassword } from "./modules/bcrypt";
+import { generateOtp } from "./modules/generateOtpCode";
+import { USER_EMAIL_TYPE } from "./modules/user.constant";
+import { signInSchema } from "./modules/validateUsers";
+
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
+  const { email, password } = await readBody(event);
+  const result = signInSchema.safeParse({ email, password });
+  if (!result.success) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "validation failed",
+      data: result.error.flatten(),
+    });
+  }
+  const userExist = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (userExist) {
+    throw createError({
+      statusCode: 400,
+      message: "This email is already been taken ",
+    });
+  }
+  const hashPwd = await hashPassword(password);
+    const otp = generateOtp();
+  const user = await prisma.user.create({
+    data: {
+      email: email,
+      password: hashPwd,
+      otpCode: otp,
+      isValidEmail:false,
+    },
+  });
+
+  await sendEmailVerification(email,otp)
   return {
-    message: body,
+    message: { message: "user created successfully", user },
   };
 });
