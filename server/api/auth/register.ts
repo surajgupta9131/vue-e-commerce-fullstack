@@ -1,8 +1,10 @@
 import prisma from "../../../utils/script.prisma";
 import { hashPassword } from "./modules/bcrypt";
 import { generateOtp } from "./modules/generateOtpCode";
+import { sendEmailVerification } from "./modules/send-email-verification";
 import { USER_EMAIL_TYPE } from "./modules/user.constant";
 import { signInSchema } from "./modules/validateUsers";
+
 
 export default defineEventHandler(async (event) => {
   const { email, password } = await readBody(event);
