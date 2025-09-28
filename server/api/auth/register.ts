@@ -26,17 +26,17 @@ export default defineEventHandler(async (event) => {
     });
   }
   const hashPwd = await hashPassword(password);
-    const otp = generateOtp();
+  const otp = generateOtp();
   const user = await prisma.user.create({
     data: {
       email: email,
       password: hashPwd,
+      isValidEmail: USER_EMAIL_TYPE.INVALID_EMAIL,
       otpCode: otp,
-      isValidEmail:false,
     },
   });
 
-  await sendEmailVerification(email,otp)
+  await sendEmailVerification(email, otp);
   return {
     message: { message: "user created successfully", user },
   };
