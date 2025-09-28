@@ -1,6 +1,10 @@
 <script setup>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 
 definePageMeta({
   layout: "auth",
@@ -32,6 +36,7 @@ async function submitInput() {
 
     loading.value = false;
     successMsg(res.message.message);
+    router.push("/auth/email-verification");
   } catch (err) {
     loading.value = false;
     const errorMessage =
