@@ -75,3 +75,20 @@ bun run preview
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 
 
+# Prisma Command
+
+- Migrate when needed to sync database
+  npx prisma migrate dev --name init
+
+
+
+
+# PSQL Command
+- Connect DB
+  psql -U suraj -d project-nuxt
+
+- get table info
+  \dt
+
+- decribe table  eg: User Table
+  \d "User"
