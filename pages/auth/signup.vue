@@ -31,20 +31,19 @@ async function submitInput() {
     });
 
     loading.value = false;
-    console.log("REs::::", res);
+    successMsg(res.message.message);
   } catch (err) {
     loading.value = false;
-    console.log("Error::::", err);
+    const errorMessage =
+      err?.data?.message || // custom error message from backend
+      err?.statusMessage || // status text like "Bad Request"
+      err?.message || // general error message
+      "An unknown error occurred."; // fallback
+
+    console.error("Error:", errorMessage);
+    showError(errorMessage);
   }
 }
-
-// Watch errors reactively
-watch(
-  () => v$.value.email.$errors,
-  (newVal) => {
-    console.log("x::::", JSON.parse(JSON.stringify(newVal)));
-  }
-);
 </script>
 
 <template>
