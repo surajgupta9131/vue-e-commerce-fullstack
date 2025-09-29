@@ -47,7 +47,8 @@ const submitOtp = async () => {
       });
       loading.value = false;
       successMsg(res.message);
-      router.push("/auth/signin");
+      window.location.href = "/auth/signin"
+      // router.push("/auth/signin");
     } catch (err) {
       loading.value = false;
       const errorMessage =

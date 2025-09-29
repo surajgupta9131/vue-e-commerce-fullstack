@@ -13,6 +13,7 @@ definePageMeta({
 });
 
 const rules = {
+  name:{required},
   email: { required, email }, // Matches state.firstName
   password: { required }, // Matches state.lastName
 };
@@ -57,6 +58,14 @@ async function submitInput() {
       <h2 class="text-center text-2xl font-bold text-gray-900">Sign up</h2>
       <!-- Form -->
       <form class="mt-6 space-y-4">
+         <!-- Name -->
+        <FormError :errors="v$.name.$errors">
+          <BaseInput
+            v-model="registerInput.name"
+            :type="'text'"
+            :placeholder="''"
+          />
+        </FormError>
         <!-- Email -->
         <FormError :errors="v$.email.$errors">
           <BaseInput

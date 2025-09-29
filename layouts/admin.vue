@@ -10,8 +10,9 @@ import {
   LogOut,
 } from 'lucide-vue-next'
 
-// const userCookie = useCookie('user', userCookieSettings)
-const userCookie:any ={};
+const userCookie:any = useCookie('user')
+
+
 const drawerOpen = ref(true)
 const showMenu = ref(false)
 
@@ -102,6 +103,7 @@ const { $logout } = useNuxtApp()
               <div class="p-4 border-b">
                 <p class="font-semibold">
                   {{ userCookie?.data?.user?.name || "Admin User" }}
+                  
                 </p>
                 <p class="text-sm text-gray-600">
                   {{ userCookie?.data?.user?.email || "admin@example.com" }}

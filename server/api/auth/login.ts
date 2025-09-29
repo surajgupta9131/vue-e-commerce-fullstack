@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
     };
 
     return {
-      message: { message: "user loggedin successfully", data, redirect: true }, // info
+      message: "user loggedin successfully", data, redirect: true , // info
     };
   } else {
     throw createError({
