@@ -2,9 +2,11 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { useRouter } from 'vue-router';
+import {useSignUpStore} from "./../../stores/signup-store"
 
 const router = useRouter();
-
+const signUpStore = useSignUpStore();
+const{registerInput}= storeToRefs(signUpStore)
 
 definePageMeta({
   layout: "auth",
@@ -15,10 +17,7 @@ const rules = {
   password: { required }, // Matches state.lastName
 };
 
-const registerInput = ref({
-  email: "",
-  password: "",
-});
+
 const loading = ref(false);
 const v$ = useVuelidate(rules, registerInput);
 async function submitInput() {
