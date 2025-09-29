@@ -9,6 +9,10 @@ const registerInput = ref({
   password: "",
 });
 
+const userCookie = useCookie("user", {
+  maxAge: 60 * 60 * 24 * 7,
+});
+
 definePageMeta({
   layout: "auth",
 });
@@ -34,7 +38,10 @@ async function submitInput() {
     });
 
     loading.value = false;
+    userCookie.value=res
+    router.push('/admin/dashboard')
     successMsg(res.message.message);
+
     // router.push("/auth/email-verification");
   } catch (err) {
     loading.value = false;
