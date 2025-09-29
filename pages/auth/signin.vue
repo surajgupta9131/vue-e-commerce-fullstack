@@ -1,8 +1,54 @@
-
 <script setup>
-definePageMeta({
-    layout:'auth'
+import { useVuelidate } from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const registerInput= ref({
+  email:'',
+  password:''
 })
+
+definePageMeta({
+  layout: "auth",
+});
+
+const rules = {
+  email: { required, email }, // Matches state.firstName
+  password: { required }, // Matches state.lastName
+};
+
+
+const loading = ref(false);
+const v$ = useVuelidate(rules, registerInput);
+async function submitInput() {
+  const isValid = v$.value.$validate();
+  if (!isValid) {
+    return;
+  }
+
+  loading.value = true;
+  try {
+    const res = await $fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(registerInput.value),
+    });
+
+    loading.value = false;
+    successMsg(res.message.message);
+    // router.push("/auth/email-verification");
+  } catch (err) {
+    loading.value = false;
+    const errorMessage =
+      err?.data?.message || // custom error message from backend
+      err?.statusMessage || // status text like "Bad Request"
+      err?.message || // general error message
+      "An unknown error occurred."; // fallback
+
+    console.error("Error:", errorMessage);
+    showError(errorMessage);
+  }
+}
 </script>
 
 <template>
@@ -10,41 +56,31 @@ definePageMeta({
     <div class="w-full max-w-sm bg-white p-8 rounded-xl shadow">
       <!-- Title -->
       <h2 class="text-center text-2xl font-bold text-gray-900">Sign In</h2>
-
       <!-- Form -->
-      <form  class="mt-6 space-y-4">
+      <form class="mt-6 space-y-4">
         <!-- Email -->
-        <div>
-          <input
-            type="email"
-            placeholder="info@gmail.com"
-            class="w-full px-3 py-2 border rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            required
+        <FormError :errors="v$.email.$errors">
+          <BaseInput
+            v-model="registerInput.email"
+            :type="'text'"
+            :placeholder="'Enter user name '"
           />
-        </div>
-
+        </FormError>
         <!-- Password -->
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            class="w-full px-3 py-2 border rounded-md text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            required
+        <FormError :errors="v$.password.$errors">
+          <BaseInput
+            v-model="registerInput.password"
+            :type="'password'"
+            :placeholder="'Enter password '"
           />
-        </div>
-
+        </FormError>
         <!-- Button -->
-        <button
-          type="submit"
-          class="w-full py-2 px-4 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition"
-        >
-         Sign in
-        </button>
+        <BaseBtn :loading="loading" :label="'Signin'" @click="submitInput" />
       </form>
 
       <!-- Link -->
       <p class="mt-4 text-center text-sm text-gray-500">
-        Don’t have an account?
+        Don't have an account?
         <NuxtLink to="/auth/signup" class="text-indigo-600 hover:underline">
           Sign up
         </NuxtLink>
