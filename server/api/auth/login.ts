@@ -2,6 +2,7 @@ import prisma from "../../../utils/script.prisma";
 import { comparePassword } from "./modules/bcrypt";
 import { signInSchema } from "./modules/validateUsers";
 import { signRefreshToken, signAccessToken } from "./modules/jwtToken";
+import { USER_EMAIL_TYPE } from "./modules/user.constant";
 
 export default defineEventHandler(async (event) => {
   const { email, password } = await readBody(event);
@@ -16,6 +17,7 @@ export default defineEventHandler(async (event) => {
   const userExist = await prisma.user.findUnique({
     where: {
       email: email,
+      isValidEmail:USER_EMAIL_TYPE.VALID_EMAIL
     },
   });
   if (!userExist) {
@@ -35,7 +37,7 @@ export default defineEventHandler(async (event) => {
         accessToken,
         refreshToken,
       },
-      user: userExist,
+      user: { name: userExist.name, email: userExist.email, id: userExist.id },
       isLoggedIn: true,
     };
 
