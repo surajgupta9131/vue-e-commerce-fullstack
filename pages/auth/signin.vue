@@ -1,13 +1,13 @@
 <script setup>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 const router = useRouter();
-const registerInput= ref({
-  email:'',
-  password:''
-})
+const registerInput = ref({
+  email: "",
+  password: "",
+});
 
 definePageMeta({
   layout: "auth",
@@ -17,7 +17,6 @@ const rules = {
   email: { required, email }, // Matches state.firstName
   password: { required }, // Matches state.lastName
 };
-
 
 const loading = ref(false);
 const v$ = useVuelidate(rules, registerInput);
@@ -39,14 +38,7 @@ async function submitInput() {
     // router.push("/auth/email-verification");
   } catch (err) {
     loading.value = false;
-    const errorMessage =
-      err?.data?.message || // custom error message from backend
-      err?.statusMessage || // status text like "Bad Request"
-      err?.message || // general error message
-      "An unknown error occurred."; // fallback
-
-    console.error("Error:", errorMessage);
-    showError(errorMessage);
+    showLoginOrSignupError(err);
   }
 }
 </script>
