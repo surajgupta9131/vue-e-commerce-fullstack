@@ -8,19 +8,40 @@ datasource db {
 }
 
 model User {
-  id           Int    @id @default(autoincrement())
-  email        String @unique
+  id           Int     @id @default(autoincrement())
+  email        String  @unique
   name         String?
   password     String
   isValidEmail Int
   otpCode      String
 }
+
 model Category {
-  id           Int    @id @default(autoincrement())
-  name        String @unique
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
 }
 
-model People{
- id           Int    @id @default(autoincrement())
- name        String @unique
+model People {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+}
+
+model Product {
+  id         Int      @id @default(autoincrement())
+  name       String
+  color      String
+  price      String
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  images     Image[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Image {
+  id        Int     @id @default(autoincrement())
+  url       String
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
 }

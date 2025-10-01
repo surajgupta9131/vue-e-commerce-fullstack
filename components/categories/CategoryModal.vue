@@ -60,7 +60,7 @@ function closeHandler() {
         class="bg-blue-400"
         :loading="loading"
         @click="submitInput"
-        :label="edit?'Update':'Save'"
+        :label="edit?'Update':'Create'"
       ></BaseBtn>
     </template>
   </BaseModal>
