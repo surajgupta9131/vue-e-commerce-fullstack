@@ -9,8 +9,10 @@ import {
   X,
   LogOut,
 } from 'lucide-vue-next'
+import { userCookieSettings } from '~/utils/user.cookie.settings'
 
-const userCookie:any = useCookie('user')
+const userCookie = useCookie('user',userCookieSettings)
+
 
 
 const drawerOpen = ref(true)
