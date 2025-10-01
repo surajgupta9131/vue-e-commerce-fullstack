@@ -2,6 +2,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { useRouter } from "vue-router";
+import { userCookieSettings } from "~/utils/user.cookie.settings";
 
 const router = useRouter();
 const registerInput = ref({
@@ -9,9 +10,7 @@ const registerInput = ref({
   password: "",
 });
 
-const userCookie = useCookie("user", {
-  maxAge: 60 * 60 * 24 * 7,
-});
+const userCookie = useCookie("user", userCookieSettings);
 
 
 definePageMeta({
