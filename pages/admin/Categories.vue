@@ -7,20 +7,12 @@ definePageMeta({
   layout: "admin",
 });
 const categoryStore = useCategoryStore()
-const {categoryInput,edit} = storeToRefs(categoryStore)
+const { categoryInput, edit } = storeToRefs(categoryStore)
+const { getCategories , data } = await categoryStore.fetchCategories()
 
 
 const showModal = ref(false);
 
-const { data, refresh: getCategories } = useFetch(
-  "/api/admin/category/get-categories",
-  {
-    headers: {
-      Accept: "application/json",
-      // Authorization:"Bearer"
-    },
-  }
-);
 
 function toggleCategoryModal() {
   showModal.value = !showModal.value;
@@ -32,7 +24,7 @@ function showCategoryModal() {
 
 function editCategory(category) {
   toggleCategoryModal()
-  categoryInput.value= category
+  categoryInput.value = category
   edit.value = true
 }
 </script>
@@ -42,16 +34,9 @@ function editCategory(category) {
     <div class="flex justify-end mb-4. pt-4">
       <BaseBtn label="create" @click="showCategoryModal"></BaseBtn>
 
-      <CategoryModal
-        @toggleCategoryModal="toggleCategoryModal"
-        @getCategories="getCategories"
-        :show="showModal"
-      >
+      <CategoryModal @toggleCategoryModal="toggleCategoryModal" @getCategories="getCategories" :show="showModal">
       </CategoryModal>
     </div>
-    <CategoryTable
-      :categories="data?.data?.categories"
-      @editCategory="editCategory"
-    ></CategoryTable>
+    <CategoryTable :categories="data?.data?.categories" @editCategory="editCategory"></CategoryTable>
   </div>
 </template>

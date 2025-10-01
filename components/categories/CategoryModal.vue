@@ -24,6 +24,7 @@ async function submitInput() {
     successMsg(res.data.message);
     closeHandler();
     emits("getCategories");
+    categoryInput.value = {}
   } catch (err) {
     loading.value = false;
     apiErrorHandler(err);
