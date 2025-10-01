@@ -5,7 +5,7 @@ import BaseBtn from "../base-components/BaseBtn.vue";
 
 const props = defineProps(["show"]);
 const categoryInput = ref({ name: "" });
-const emits = defineEmits(["toggleCategoryModal"]);
+const emits = defineEmits(["toggleCategoryModal",'getCategories']);
 const loading = ref(false);
 
 async function submitInput() {
@@ -18,13 +18,15 @@ async function submitInput() {
 
     loading.value = false;
      successMsg(res.data.message);
+     closeHandler()
+     emits("getCategories")
   } catch (err) {
     loading.value = false;
     apiErrorHandler(err)
   }
 }
 
-const closeHandler = () => {
+function closeHandler () {
   emits("toggleCategoryModal");
 };
 </script>
