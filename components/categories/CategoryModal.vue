@@ -1,10 +1,11 @@
 <script setup>
 const props = defineProps(["show"]);
-const categoryInput = ref({name:''})
-import BaseModal from '../base-components/BaseModal.vue';
-import BaseInput from '../base-components/BaseInput.vue';
-import BaseBtn from '../base-components/BaseBtn.vue';
-const loading = ref(false)
+const categoryInput = ref({ name: "" });
+const emits = defineEmits(["toggleCategoryModal"]);
+import BaseModal from "../base-components/BaseModal.vue";
+import BaseInput from "../base-components/BaseInput.vue";
+import BaseBtn from "../base-components/BaseBtn.vue";
+const loading = ref(false);
 
 async function submitInput() {
   loading.value = true;
@@ -15,15 +16,19 @@ async function submitInput() {
     });
 
     loading.value = false;
-    // router.push('/admin/dashboard')
+    router.push('/admin/dashboard')
     successMsg(res.message);
 
     // router.push("/auth/email-verification");
   } catch (err) {
     loading.value = false;
+    apiErrorHandler(err)
   }
 }
 
+const closeHandler = () => {
+  emits("toggleCategoryModal");
+};
 </script>
 <template>
   <BaseModal v-show="show">
@@ -40,11 +45,17 @@ async function submitInput() {
     </template>
 
     <template #footer>
-       
-      <BaseBtn class="bg-slate-400" @click="show=false"
-      label="Close"></BaseBtn>
-        <BaseBtn class="bg-blue-400" :loading="loading" @click = "submitInput"
-      label="Save"></BaseBtn>
+      <BaseBtn
+        class="bg-slate-400"
+        @click="closeHandler"
+        label="Close"
+      ></BaseBtn>
+      <BaseBtn
+        class="bg-blue-400"
+        :loading="loading"
+        @click="submitInput"
+        label="Save"
+      ></BaseBtn>
     </template>
   </BaseModal>
 </template>

@@ -6,9 +6,9 @@ definePageMeta({
 
 const showModal = ref(false);
 
-// function toggleCategoryModal() {
-//   showModal.value = !showModal.value;
-// }
+function toggleCategoryModal() {
+  showModal.value = !showModal.value;
+}
 
 // const categoryStore=useCategoryStore()
 // const {categoryInput,edit}=storeToRefs(categoryStore)
@@ -23,13 +23,14 @@ const showModal = ref(false);
 function showCategoryModal(){
   showModal.value=true
 }
+
 </script>
 <template>
   <div class="h-screen">
     <div class="flex justify-end mb-4. pt-4">
       <BaseBtn label="create" @click="showCategoryModal"></BaseBtn>
 
-      <CategoryModal :loading="true" :show="showModal"> </CategoryModal>
+      <CategoryModal @toggleCategoryModal="toggleCategoryModal" :show="showModal"> </CategoryModal>
     </div>
     <!-- <CategoryTable></CategoryTable> -->
   </div>
