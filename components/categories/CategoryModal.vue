@@ -4,36 +4,42 @@ import BaseInput from "../base-components/BaseInput.vue";
 import BaseBtn from "../base-components/BaseBtn.vue";
 
 const props = defineProps(["show"]);
-const categoryInput = ref({ name: "" });
-const emits = defineEmits(["toggleCategoryModal",'getCategories']);
+const categoryStore = useCategoryStore();
+const { categoryInput, edit } = storeToRefs(categoryStore);
+const emits = defineEmits(["toggleCategoryModal", "getCategories"]);
 const loading = ref(false);
 
 async function submitInput() {
   loading.value = true;
   try {
-    const res = await $fetch("/api/admin/category/create-category", {
-      method: "POST",
+    const url = edit.value
+      ? "/api/admin/category/update-category"
+      : "/api/admin/category/create-category";
+    const method = edit.value ? "PUT" : "POST";
+    const res = await $fetch(url, {
+      method,
       body: JSON.stringify(categoryInput.value),
     });
-
     loading.value = false;
-     successMsg(res.data.message);
-     closeHandler()
-     emits("getCategories")
+    successMsg(res.data.message);
+    closeHandler();
+    emits("getCategories");
   } catch (err) {
     loading.value = false;
-    apiErrorHandler(err)
+    apiErrorHandler(err);
   }
 }
 
-function closeHandler () {
+function closeHandler() {
   emits("toggleCategoryModal");
-};
+}
 </script>
 <template>
   <BaseModal v-show="show">
     <template #title>
-      <h1 class="text-2xl">Create category</h1>
+      <h1 class="text-2xl">
+        {{ edit ? "Update Category" : "Create Category" }}
+      </h1>
     </template>
 
     <template #body>
@@ -54,7 +60,7 @@ function closeHandler () {
         class="bg-blue-400"
         :loading="loading"
         @click="submitInput"
-        label="Save"
+        :label="edit?'Update':'Save'"
       ></BaseBtn>
     </template>
   </BaseModal>
