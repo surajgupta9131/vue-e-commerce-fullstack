@@ -1,10 +1,11 @@
 <script setup>
-const props = defineProps(["show"]);
-const categoryInput = ref({ name: "" });
-const emits = defineEmits(["toggleCategoryModal"]);
 import BaseModal from "../base-components/BaseModal.vue";
 import BaseInput from "../base-components/BaseInput.vue";
 import BaseBtn from "../base-components/BaseBtn.vue";
+
+const props = defineProps(["show"]);
+const categoryInput = ref({ name: "" });
+const emits = defineEmits(["toggleCategoryModal"]);
 const loading = ref(false);
 
 async function submitInput() {
@@ -16,10 +17,7 @@ async function submitInput() {
     });
 
     loading.value = false;
-    router.push('/admin/dashboard')
-    successMsg(res.message);
-
-    // router.push("/auth/email-verification");
+     successMsg(res.data.message);
   } catch (err) {
     loading.value = false;
     apiErrorHandler(err)
