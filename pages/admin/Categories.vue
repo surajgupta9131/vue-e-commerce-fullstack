@@ -4,7 +4,7 @@ definePageMeta({
   layout: "admin",
 });
 
-// const showModal = ref(false);
+const showModal = ref(false);
 
 // function toggleCategoryModal() {
 //   showModal.value = !showModal.value;
@@ -20,11 +20,16 @@ definePageMeta({
 //   edit.value=true
 //   toggleCategoryModal()
 // }
+function showCategoryModal(){
+  showModal.value=true
+}
 </script>
 <template>
   <div class="h-screen">
     <div class="flex justify-end mb-4. pt-4">
-      <CategoryModal :loading="true" :show="true"> </CategoryModal>
+      <BaseBtn label="create" @click="showCategoryModal"></BaseBtn>
+
+      <CategoryModal :loading="true" :show="showModal"> </CategoryModal>
     </div>
     <!-- <CategoryTable></CategoryTable> -->
   </div>

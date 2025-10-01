@@ -4,7 +4,25 @@ const categoryInput = ref({name:''})
 import BaseModal from '../base-components/BaseModal.vue';
 import BaseInput from '../base-components/BaseInput.vue';
 import BaseBtn from '../base-components/BaseBtn.vue';
+const loading = ref(false)
 
+async function submitInput() {
+  loading.value = true;
+  try {
+    const res = await $fetch("/api/admin/category/create-category", {
+      method: "POST",
+      body: JSON.stringify(categoryInput.value),
+    });
+
+    loading.value = false;
+    // router.push('/admin/dashboard')
+    successMsg(res.message);
+
+    // router.push("/auth/email-verification");
+  } catch (err) {
+    loading.value = false;
+  }
+}
 
 </script>
 <template>
@@ -23,9 +41,9 @@ import BaseBtn from '../base-components/BaseBtn.vue';
 
     <template #footer>
        
-      <BaseBtn class="bg-slate-400" 
+      <BaseBtn class="bg-slate-400" @click="show=false"
       label="Close"></BaseBtn>
-        <BaseBtn class="bg-blue-400" 
+        <BaseBtn class="bg-blue-400" :loading="loading" @click = "submitInput"
       label="Save"></BaseBtn>
     </template>
   </BaseModal>
